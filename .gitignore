@@ -1,0 +1,11 @@
+*.gitattributes
+*.vcxproj*
+.metadata/*
+.cproject
+.project
+AdventOfCode18/.settings
+AdventOfCode18/boost
+AdventOfCode18/Debug
+AdventOfCode18/.settings
+AdventOfCode18/boost
+AdventOfCode18/Debug
