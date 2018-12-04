@@ -11,7 +11,7 @@ int main() {
 	int number;
 	vector<int> frequencys;
 
-	inputFile.open("res/day1_input.txt");
+	inputFile.open("res/day01_input.txt");
 	frequencys.push_back(0);
 
 	// already reads the numbers sign (negative or positive)
