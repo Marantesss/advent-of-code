@@ -1,8 +1,3 @@
--- CONSTANTS
-SUM = 0
-MULTIPLY = 1
-END = 99
-
 -- see if the file exists
 function file_exists(file)
     local f = io.open(file, "rb")
@@ -21,6 +16,7 @@ function lines_from(file)
     return lines
 end
 
+-- transforms string 'lines' into a list
 function get_input_in_list()
     -- get input file
     local file = 'res/day02.txt'
@@ -36,38 +32,49 @@ end
 -----------------------------------------
 ------------ FIRST PROBLEM --------------
 -----------------------------------------
-function problem_1(list)
+-- CONSTANTS
+SUM = 1
+MULTIPLY = 2
+END = 99
+
+
+function problem_1()
     local current_key = 1
     
     while true do
-        print(list[current_key])
-        if list[current_key] == SUM then
-            sum_array(list, current_key+1, current_key+2, current_key+3)
-        elseif list[current_key] == MULTIPLY then
-            multiplay_array(list, current_key+1, current_key+2, current_key+3)
-        elseif list[current_key] == END then
+        if input_list[current_key] == SUM then
+            sum_array(input_list[current_key + 1], input_list[current_key + 2], input_list[current_key + 3])
+        elseif input_list[current_key] == MULTIPLY then
+            multiplay_array(input_list[current_key + 1], input_list[current_key + 2], input_list[current_key + 3])
+        elseif input_list[current_key] == END then
             return
+        else
+            print("SOMETHING WENT WRONG")
         end
         current_key = current_key + 4
     end
 end
 
-function sum_array(list, index1, index2, index3)
-    list[index3 + 1] = list[index1 + 1] + list[index2 + 1]
+function sum_array(index1, index2, index3)
+    input_list[index3 + 1] = input_list[index1 + 1] + input_list[index2 + 1]
 end
 
-function multiplay_array(list, index1, index2, index3)
-    list[index3 + 1] = list[index1 + 1] * list[index2 + 1]
+function multiplay_array(index1, index2, index3)
+    input_list[index3 + 1] = input_list[index1 + 1] * input_list[index2 + 1]
 end
 
 -----------------------------------------
 ----------- SECOND PROBLEM --------------
 -----------------------------------------
-
-local old_list = get_input_in_list()
-local new_list = old_list;
-problem_1(new_list)
-
-for k, v in pairs(new_list) do
-    print(old_list[k] .. " - " .. new_list[k])
+function problem_2()
+    
 end
+
+input_list = get_input_in_list()
+
+problem_1()
+print("Problem 1 solution " .. input_list[1])
+
+problem_2()
+print("Problem 2 solution " .. "eventually :)")
+
