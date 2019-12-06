@@ -66,15 +66,42 @@ end
 -----------------------------------------
 ----------- SECOND PROBLEM --------------
 -----------------------------------------
+SOLUTION = 19690720
+
 function problem_2()
-    
+    for x = 0, 99, 1 do
+        for y = 0, 99, 1 do
+            input_list = get_input_in_list()
+            input_list[2] = x
+            input_list[3] = y
+            problem_1()
+            if input_list[1] == SOLUTION then
+                noun = x
+                verb = y
+                return
+            end
+        end
+    end
+
+end
+
+function found_solution()
+    if input_list[1] == SOLUTION then
+        return true
+    else
+        return false
+    end
 end
 
 input_list = get_input_in_list()
-
 problem_1()
 print("Problem 1 solution " .. input_list[1])
 
+
+-- reset input list
+input_list = get_input_in_list()
+noun = 0
+verb = 0
 problem_2()
-print("Problem 2 solution " .. "eventually :)")
+print("Problem 2 solution " .. 100 * noun + verb)
 
