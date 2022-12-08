@@ -8,6 +8,8 @@ object Day3 extends Solver:
 
     def getDuplicateItemType(r: Rucksack): Char = r(0).find(item => r(1).contains(item)).get
 
+    def getFlattenRucksack(r: Rucksack): Seq[Char] = r(0) ++ r(1)
+
     // Lowercase item types a through z have priorities 1 through 26.
     // Uppercase item types A through Z have priorities 27 through 52.
     // 'a'.toInt = 97
@@ -21,14 +23,31 @@ object Day3 extends Solver:
 
     def parseContent(content: String): Seq[Rucksack] = content.split("\n").map(parseRucksack).toSeq
 
+    // part 2
+    type ElfGroup = (Rucksack, Rucksack, Rucksack)
+
+    def parseElfGroups(rucksacks: Seq[Rucksack]): Seq[ElfGroup] =
+        if rucksacks.isEmpty
+            then Seq()
+            else Seq((rucksacks(0), rucksacks(1), rucksacks(2))) ++ parseElfGroups(rucksacks.drop(3))
+
+    def getElfGroupType(group: ElfGroup): Char = 
+        val r0 = getFlattenRucksack(group(0))
+        val r1 = getFlattenRucksack(group(1))
+        val r2 = getFlattenRucksack(group(2))
+
+        r0.find(item => r1.contains(item) && r2.contains(item)).get
+
     def solve(p: Problem): Solution | (Solution, Solution) = 
         val fileContents: String = p.parseInputAsString()
         val rucksacks = parseContent(fileContents)
+        val elfGroups = parseElfGroups(rucksacks)
 
-        val duplicateItems = rucksacks.map(getDuplicateItemType)
-        val priority = duplicateItems.map(getItemPriority)
-
-        return (Solution(priority.sum), Solution(0))
+        return (
+            Solution(rucksacks.map(getDuplicateItemType).map(getItemPriority).sum),
+            Solution(elfGroups.map(getElfGroupType).map(getItemPriority).sum)
+        )
+        
 
   
 end Day3
