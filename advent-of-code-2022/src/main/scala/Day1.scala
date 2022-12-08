@@ -2,10 +2,11 @@ import Utils.Solution
 import Utils.Problem
 import Utils.Solver
 
-// Array is mutable, use sequence instead
-type Elf = Seq[Int]
 
 object Day1 extends Solver:
+    // Array is mutable, use sequence instead
+    type Elf = Seq[Int]
+    
     def parseElves(input: String) = input.split("\n\n").toSeq.map(parseElf)
 
     def parseElf(elf: String): Elf = elf.split("\n").toSeq.map(x => x.toInt)

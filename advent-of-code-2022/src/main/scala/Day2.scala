@@ -1,49 +1,47 @@
-import scala.io.Source
 import Utils.Solver
 import Utils.Problem
 import Utils.Solution
 
 
 
-trait Play:
-    val points: Int
-
-case class Rock() extends Play:
-    val points = 1
-
-case class Paper() extends Play:
-    val points = 2
-
-case class Scissors() extends Play:
-    val points = 3
-
-// Left Play is opponent
-// Right Play is me
-type Round = (Play, Play)
-type Game = Seq[Round]
-
-val win = 6
-val draw = 3
-val lose = 0
-
-
 object Day2 extends Solver:
 
+    trait Play:
+        val points: Int
+    
+    case class Rock() extends Play:
+        val points = 1
+    
+    case class Paper() extends Play:
+        val points = 2
+    
+    case class Scissors() extends Play:
+        val points = 3
+    
+    // Left Play is opponent
+    // Right Play is me
+    type Round = (Play, Play)
+    type Game = Seq[Round]
+    
+    final val Win = 6
+    final val Draw = 3
+    final val Lose = 0
+
     def getRoundScore(r: Round): Int = r match
-        // I lose
+        // I Lose
         // cannot be done (type matching does not work) :(
-        // case p: (Scissors, Paper) | p: (Rock, Scissors) | p: (Paper, Rock) => lose - p(0).points
-        case (_: Scissors, p: Paper) => lose + p.points
-        case (_: Rock, s: Scissors) => lose + s.points
-        case (_: Paper, r: Rock) => lose + r.points
-        // I win
-        case (_: Paper, s: Scissors) => win + s.points
-        case (_: Scissors, r: Rock) => win + r.points
-        case (_: Rock, p: Paper) => win + p.points
-        // draw
-        case (_: Rock, r: Rock) => draw + r.points
-        case (_: Paper, p: Paper) => draw + p.points
-        case (_: Scissors, s: Scissors) => draw + s.points
+        // case p: (Scissors, Paper) | p: (Rock, Scissors) | p: (Paper, Rock) => Lose - p(0).points
+        case (_: Scissors, p: Paper) => Lose + p.points
+        case (_: Rock, s: Scissors) => Lose + s.points
+        case (_: Paper, r: Rock) => Lose + r.points
+        // I Win
+        case (_: Paper, s: Scissors) => Win + s.points
+        case (_: Scissors, r: Rock) => Win + r.points
+        case (_: Rock, p: Paper) => Win + p.points
+        // Draw
+        case (_: Rock, r: Rock) => Draw + r.points
+        case (_: Paper, p: Paper) => Draw + p.points
+        case (_: Scissors, s: Scissors) => Draw + s.points
         // error
         case _ => throw Error("Invalid round type")
 
@@ -98,7 +96,5 @@ object Day2 extends Solver:
         val game2 = parseGamePart2(fileContents)
         
         return (Solution(getGameScore(game1)), Solution(getGameScore(game2)))
-        
-
 end Day2
 
