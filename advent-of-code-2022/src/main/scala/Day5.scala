@@ -1,7 +1,6 @@
 import Utils.Solver
 import Utils.Problem
 import Utils.Solution
-import Utils.Solver
 import scala.collection.mutable.Stack
 
 object Day5 extends Solver:
