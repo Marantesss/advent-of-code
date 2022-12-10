@@ -50,9 +50,16 @@ object Day5 extends Solver:
         val (contentWarehouse, contentMoves) = (content.split("\n\n")(0), content.split("\n\n")(1))
         (parseWarehouse(contentWarehouse), parseMoves(contentMoves))
 
-    def makeMove(warehouse: Warehouse, move: Move): Unit =
+    def makeMove9000(warehouse: Warehouse, move: Move): Unit =
         val (numberOfCrates, fromIndex, toIndex) = move
+        // LIFO
         1 to numberOfCrates foreach { _ => warehouse(toIndex).push(warehouse(fromIndex).pop())}
+
+    def makeMove9001(warehouse: Warehouse, move: Move): Unit =
+        val (numberOfCrates, fromIndex, toIndex) = move
+        // FIFO
+        val popCrates = 1 to numberOfCrates map { _ => warehouse(fromIndex).pop()}
+        warehouse(toIndex).pushAll(popCrates.reverse)
 
     def getSolution(warehouse: Warehouse): String = warehouse.map(_.head).mkString
 
@@ -60,7 +67,7 @@ object Day5 extends Solver:
         val fileContents: String = p.parseInputAsString(false)
         val (warehouse, moves) = parseContent(fileContents)
 
-        moves.foreach(move => makeMove(warehouse, move))
+        moves.foreach(move => makeMove9001(warehouse, move))
         Solution(getSolution(warehouse))
 
     // NOT USED
