@@ -16,10 +16,9 @@ object Day8 extends Solver:
     def getNumRows(forest: Forest): Int = forest.length
     def getNumCols(forest: Forest): Int = forest(0).length
 
-    // Also basic sub tree manipulation
+    // Also basic sub grid manipulation
     def getRowLeft(forest: Forest, position: Position): Seq[Int] = getRow(forest, position).dropRight(getNumCols(forest) - position(0))
     def getRowRight(forest: Forest, position: Position): Seq[Int] = getRow(forest, position).drop(position(0) + 1)
-
     def getColUp(forest: Forest, position: Position): Seq[Int] = getCol(forest, position).dropRight(getNumRows(forest) - position(1))
     def getColDown(forest: Forest, position: Position): Seq[Int] = getCol(forest, position).drop(position(1) + 1)
 
@@ -42,27 +41,17 @@ object Day8 extends Solver:
     // rowRight = Seq(1, 6, 2)
     // rowLeft.span(_ < tree) => (Seq(2), Seq()) // last tree was reached, we can only see tree 2
     // rowRight.span(_ < tree) => (Seq(1), Seq(6, 2)) // we can see tree 1, but we can still see tree 6
-    def getViewingDistanceTreesLeft(forest: Forest, position: Position): Seq[Int] = 
-        val (in, out) = getRowLeft(forest, position).reverse.span(_ < getTree(forest, position))
-        if out.length == 0 then in else in ++ out.take(1)
-
-    def getViewingDistanceTreesRight(forest: Forest, position: Position): Seq[Int] =
-        val (in, out) = getRowRight(forest, position).span(_ < getTree(forest, position))
-        if out.length == 0 then in else in ++ out.take(1)
-        
-    def getViewingDistanceTreesUp(forest: Forest, position: Position): Seq[Int] =
-        val (in, out) = getColUp(forest, position).reverse.span(_ < getTree(forest, position))
-        if out.length == 0 then in else in ++ out.take(1)
-
-    def getViewingDistanceTreesDown(forest: Forest, position: Position): Seq[Int] =
-        val (in, out) = getColDown(forest, position).span(_ < getTree(forest, position))
-        if out.length == 0 then in else in ++ out.take(1)
+    def calculateTreesInRange(trees: (Seq[Int], Seq[Int])): Seq[Int] = trees(0) ++ trees(1).take(1)
+    def getViewingDistanceTreesLeft(forest: Forest, position: Position): Seq[Int] = calculateTreesInRange(getRowLeft(forest, position).reverse.span(_ < getTree(forest, position)))
+    def getViewingDistanceTreesRight(forest: Forest, position: Position): Seq[Int] = calculateTreesInRange(getRowRight(forest, position).span(_ < getTree(forest, position)))
+    def getViewingDistanceTreesUp(forest: Forest, position: Position): Seq[Int] = calculateTreesInRange(getColUp(forest, position).reverse.span(_ < getTree(forest, position)))
+    def getViewingDistanceTreesDown(forest: Forest, position: Position): Seq[Int] = calculateTreesInRange(getColDown(forest, position).span(_ < getTree(forest, position)))
 
     def getViewingScore(forest: Forest, position: Position): Int =
-        (getViewingDistanceTreesLeft(forest, position) ++
-            getViewingDistanceTreesRight(forest, position) ++
-            getViewingDistanceTreesUp(forest, position) ++
-            getViewingDistanceTreesDown(forest, position)).length
+        getViewingDistanceTreesLeft(forest, position).length *
+            getViewingDistanceTreesRight(forest, position).length *
+            getViewingDistanceTreesUp(forest, position).length *
+            getViewingDistanceTreesDown(forest, position).length
 
     def getMaxViewingScore(forest: Forest): Int = getAllPositions(forest).map(position => getViewingScore(forest, position)).max
 
