@@ -24,10 +24,10 @@ object Day8 extends Solver:
     def getColDown(forest: Forest, position: Position): Seq[Int] = getCol(forest, position).drop(position(1) + 1)
 
     // calculating visibility
-    def isVisibleLeft(forest: Forest, position: Position): Boolean = getRowLeft(forest, position).filter(tree => tree >= getTree(forest, position)).length == 0
-    def isVisibleRight(forest: Forest, position: Position): Boolean = getRowRight(forest, position).filter(tree => tree >= getTree(forest, position)).length == 0
-    def isVisibleUp(forest: Forest, position: Position): Boolean = getColUp(forest, position).filter(tree => tree >= getTree(forest, position)).length == 0
-    def isVisibleDown(forest: Forest, position: Position): Boolean = getColDown(forest, position).filter(tree => tree >= getTree(forest, position)).length == 0
+    def isVisibleLeft(forest: Forest, position: Position): Boolean = getRowLeft(forest, position).filter(_ >= getTree(forest, position)).length == 0
+    def isVisibleRight(forest: Forest, position: Position): Boolean = getRowRight(forest, position).filter(_ >= getTree(forest, position)).length == 0
+    def isVisibleUp(forest: Forest, position: Position): Boolean = getColUp(forest, position).filter(_ >= getTree(forest, position)).length == 0
+    def isVisibleDown(forest: Forest, position: Position): Boolean = getColDown(forest, position).filter(_ >= getTree(forest, position)).length == 0
 
     def isVisible(forest: Forest, position: Position): Boolean = isVisibleLeft(forest, position) || isVisibleRight(forest, position) || isVisibleUp(forest, position) || isVisibleDown(forest, position)
 
