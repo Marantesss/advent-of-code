@@ -37,3 +37,10 @@ trait Solver:
 case class Position(x: Int, y: Int):
     def +(that: Position): Position = Position(x + that.x, y + that.y)
     def -(that: Position): Position = Position(x - that.x, y - that.y)
+    def *(value: Int): Position = Position(x * value, y * value)
+    def ==(that: Position): Boolean = x == that.x && y == that.y
+    def !=(that: Position): Boolean = x != that.x || y != that.y
+
+/**
+ * GridZippers: https://www.47deg.com/blog/game-of-life-scala/
+ */
