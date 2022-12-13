@@ -27,3 +27,13 @@ final case class Problem(
 trait Solver:
     def solve(p: Problem): Solution | (Solution, Solution)
 
+
+/**
+ * Position/Coordinate on a 2D grid
+ *
+ * @param x X coordinate
+ * @param y Y coordinate
+ */
+case class Position(x: Int, y: Int):
+    def +(that: Position): Position = Position(x + that.x, y + that.y)
+    def -(that: Position): Position = Position(x - that.x, y - that.y)

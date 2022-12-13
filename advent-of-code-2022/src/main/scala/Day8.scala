@@ -1,26 +1,26 @@
 import Utils.Solver
 import Utils.Problem
 import Utils.Solution
+import Utils.Position
 
 object Day8 extends Solver:
 
-    type Position = (Int, Int)
     type Grid[A] = Seq[Seq[A]]
 
     type Forest = Grid[Int]
 
     // Basic grid manipulation
-    def getTree(forest: Forest, position: Position): Int = forest(position(1))(position(0))
-    def getRow(forest: Forest, position: Position): Seq[Int] = forest(position(1)).toSeq
-    def getCol(forest: Forest, position: Position): Seq[Int] = forest.map(_(position(0))).toSeq
+    def getTree(forest: Forest, position: Position): Int = forest(position.x)(position.y)
+    def getRow(forest: Forest, position: Position): Seq[Int] = forest(position.y).toSeq
+    def getCol(forest: Forest, position: Position): Seq[Int] = forest.map(_(position.x)).toSeq
     def getNumRows(forest: Forest): Int = forest.length
     def getNumCols(forest: Forest): Int = forest(0).length
 
     // Also basic sub grid manipulation
-    def getRowLeft(forest: Forest, position: Position): Seq[Int] = getRow(forest, position).dropRight(getNumCols(forest) - position(0))
-    def getRowRight(forest: Forest, position: Position): Seq[Int] = getRow(forest, position).drop(position(0) + 1)
-    def getColUp(forest: Forest, position: Position): Seq[Int] = getCol(forest, position).dropRight(getNumRows(forest) - position(1))
-    def getColDown(forest: Forest, position: Position): Seq[Int] = getCol(forest, position).drop(position(1) + 1)
+    def getRowLeft(forest: Forest, position: Position): Seq[Int] = getRow(forest, position).dropRight(getNumCols(forest) - position.x)
+    def getRowRight(forest: Forest, position: Position): Seq[Int] = getRow(forest, position).drop(position.x + 1)
+    def getColUp(forest: Forest, position: Position): Seq[Int] = getCol(forest, position).dropRight(getNumRows(forest) - position.y)
+    def getColDown(forest: Forest, position: Position): Seq[Int] = getCol(forest, position).drop(position.y + 1)
 
     // calculating visibility
     def isVisibleLeft(forest: Forest, position: Position): Boolean = getRowLeft(forest, position).filter(_ >= getTree(forest, position)).length == 0
@@ -55,7 +55,7 @@ object Day8 extends Solver:
 
     def getMaxViewingScore(forest: Forest): Int = getAllPositions(forest).map(position => getViewingScore(forest, position)).max
 
-    def getAllPositions(forest: Forest): Seq[Position] = Seq.range(0, getNumCols(forest)).map(x => Seq.range(0, getNumRows(forest)).map(y => (x, y))).flatten
+    def getAllPositions(forest: Forest): Seq[Position] = Seq.range(0, getNumCols(forest)).map(x => Seq.range(0, getNumRows(forest)).map(y => Position(x, y))).flatten
 
     def parseRow(row: String): Seq[Int] = row.toCharArray.map(_.asDigit).toSeq
     def parseForest(content: String): Forest = content.split("\n").map(parseRow)
